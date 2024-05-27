@@ -47,18 +47,38 @@ public abstract class Conta implements IConta{
 
     @Override
     public void sacar(double valor) {
-        saldo -= valor;
+        if(valor <= this.getSaldo()){
+            this.saldo -= valor;
+            System.out.println("Saque realizado com sucesso!");
+            imprimirSaldoAtual();
+        }else {
+            System.out.println("Saldo insuficiente!");
+            imprimirSaldoAtual();
+        }
     }
 
     @Override
     public void depositar(double valor) {
-        saldo += valor;
+        this.saldo += valor;
+        System.out.println("Depósito efetuado com sucesso!");
+        imprimirSaldoAtual();
     }
 
     @Override
     public void transferir(double valor, Conta contaDestino) {
-        this.sacar(valor);
-        contaDestino.depositar(valor);
+        if(valor <= this.getSaldo()){
+            this.sacar(valor);
+            contaDestino.depositar(valor);
+            System.out.println("Transferência realizada com sucesso!");
+            imprimirSaldoAtual();
+        }else {
+            System.out.println("Saldo insuficiente!");
+            imprimirSaldoAtual();
+        }
+    }
+    @Override
+    public void imprimirSaldoAtual(){
+        System.out.println("Saldo atual: R$" + String.format("%.2f", this.getSaldo()));
     }
     protected void imprimirInfosComuns(){
         System.out.println(String.format("Titular: %s", this.cliente.getNome()));
